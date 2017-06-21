@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Baker\'s Book</string>
+    <string name="resource_url" translatable="false">http://go.udacity.com/android-baking-app-json</string>
+    <string name="text_servings">Servings :%1$d</string>
+    <string name="no_internet">Please Check your internet Connection</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="connection_timed_out">Connection Timed out</string>
+    <string name="unknown_error">Unknown Error Occurred</string>
+    <string name="go_next">Next</string>
+    <string name="go_previous">Previous</string>
+    <string name="message_widget_added">Added to Home Screen Widget</string>
+    <string name="appwidget_text">Touch to Select Recipe</string>
+    <string name="ingredients_title">Ingredients</string>
+    <string name="instructions_title">Preparation Instructions</string>
+    <string name="open_drawer">Open Navigation Drawer</string>
+    <string name="close_drawer">Close Navigation Drawer</string>
+</resources>
