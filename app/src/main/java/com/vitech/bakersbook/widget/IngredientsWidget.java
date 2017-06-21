@@ -24,7 +24,7 @@ public class IngredientsWidget extends AppWidgetProvider {
                                 JSONArray ingredients, int appWidgetId)throws JSONException {
         Log.d("widget","update called");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
-       remoteViews.removeAllViews(R.id.widget);
+       //remoteViews.removeAllViews(R.id.widget);
         Intent adapterIntent  = new Intent(context, WidgetListAdapterService.class);
         adapterIntent.putExtra(ARG_INGREDIENTS,ingredients.toString());
         remoteViews.setRemoteAdapter(R.id.ingredients_widget_list,adapterIntent);
