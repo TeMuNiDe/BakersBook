@@ -44,7 +44,11 @@ public class RecipeActivity extends AppCompatActivity {
 static boolean TABLET_MODE;
 public static final String EXTRA_RECIPE = "recipe";
 public static final String EXTRA_RECIPES = "recipes";
-JSONArray ingerdients;
+private static final String ARG_APP_STATE = "app_state";
+
+private Bundle appState;
+
+private JSONArray ingredients;
 
 
     @Override
@@ -53,13 +57,20 @@ JSONArray ingerdients;
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
         TABLET_MODE = instructionContainer!=null;
-        setContentView(getIntent());
+        appState = getIntent().getExtras();
+        if(savedInstanceState!=null){
+            if(savedInstanceState.containsKey(ARG_APP_STATE)){
+                appState = savedInstanceState.getBundle(ARG_APP_STATE);
+            }
+        }
+        setContentView(appState);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        setContentView(intent);
+        appState = intent.getExtras();
+        setContentView(appState);
 
     }
 
@@ -76,7 +87,7 @@ JSONArray ingerdients;
     }
 
 
-    void setContentView(Intent intent){
+    void setContentView(Bundle intent){
         recipeDrawer.closeDrawer(GravityCompat.START);
        toggle = new ActionBarDrawerToggle(this,recipeDrawer,R.string.open_drawer,R.string.close_drawer);
         recipeDrawer.addDrawerListener(toggle);
@@ -87,10 +98,10 @@ JSONArray ingerdients;
 
 
         try{
-            final  JSONObject recipe = new JSONObject(intent.getStringExtra(EXTRA_RECIPE));
-            final JSONArray recipes = new JSONArray(intent.getStringExtra(EXTRA_RECIPES));
+            final  JSONObject recipe = new JSONObject(intent.getString(EXTRA_RECIPE));
+            final JSONArray recipes = new JSONArray(intent.getString(EXTRA_RECIPES));
             final JSONArray steps = recipe.getJSONArray("steps");
-            ingerdients = recipe.getJSONArray("ingredients");
+            ingredients = recipe.getJSONArray("ingredients");
             setTitle(recipe.getString("name"));
             NavRecipeAdapter adapter = new NavRecipeAdapter(recipes);
             allRecipes.setAdapter(adapter);
@@ -102,7 +113,7 @@ JSONArray ingerdients;
 
                 }
             });
-            ingredientsList.setAdapter(new IngredientListAdapter(this,ingerdients));
+            ingredientsList.setAdapter(new IngredientListAdapter(this, ingredients));
             instructionList.setAdapter(new InstructionListAdapter(this,recipe.getJSONArray("steps")));
             ingredientsList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false){
                 @Override
@@ -146,6 +157,12 @@ JSONArray ingerdients;
 
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle(ARG_APP_STATE,appState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.recipe_activity_menu,menu);
         return super.onCreateOptionsMenu(menu);
@@ -163,7 +180,7 @@ JSONArray ingerdients;
 for(int widget:widgets){
     try {
         Log.d("widget","clicked_recipe");
-        IngredientsWidget.updateAppWidget(this, manager, ingerdients, widget);
+        IngredientsWidget.updateAppWidget(this, manager, ingredients, widget);
     }catch (JSONException j){
         j.printStackTrace();
     }
@@ -172,4 +189,6 @@ for(int widget:widgets){
 Toast.makeText(this,R.string.message_widget_added,Toast.LENGTH_LONG).show();
         return true;
     }
+
+
 }

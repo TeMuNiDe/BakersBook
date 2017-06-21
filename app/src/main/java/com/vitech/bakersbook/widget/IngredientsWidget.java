@@ -24,12 +24,12 @@ public class IngredientsWidget extends AppWidgetProvider {
                                 JSONArray ingredients, int appWidgetId)throws JSONException {
         Log.d("widget","update called");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
+       remoteViews.removeAllViews(R.id.widget);
         Intent adapterIntent  = new Intent(context, WidgetListAdapterService.class);
         adapterIntent.putExtra(ARG_INGREDIENTS,ingredients.toString());
         remoteViews.setRemoteAdapter(R.id.ingredients_widget_list,adapterIntent);
         remoteViews.setTextViewText(R.id.empty_view,"Empty Clicked");
         remoteViews.setViewVisibility(R.id.ingredients_widget_list, View.VISIBLE);
-
         remoteViews.setViewVisibility(R.id.empty_view, View.GONE);
         Intent app = new Intent(context,BakersBookActivity.class);
         PendingIntent appLauncher = PendingIntent.getActivity(context,0,app,0);
