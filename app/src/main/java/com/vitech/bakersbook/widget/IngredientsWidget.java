@@ -11,7 +11,6 @@ import android.widget.RemoteViews;
 
 import com.vitech.bakersbook.BakersBookActivity;
 import com.vitech.bakersbook.R;
-import com.vitech.bakersbook.widget.WidgetListAdapterService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,8 +23,8 @@ public class IngredientsWidget extends AppWidgetProvider {
                                 JSONArray ingredients, int appWidgetId)throws JSONException {
         Log.d("widget","update called");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
-       remoteViews.removeAllViews(R.id.widget);
-        Intent adapterIntent  = new Intent(context, WidgetListAdapterService.class);
+      // remoteViews.removeAllViews(R.id.widget);
+        Intent adapterIntent  = new Intent(context, com.vitech.bakersbook.widget.WidgetListAdapterService.class);
         adapterIntent.putExtra(ARG_INGREDIENTS,ingredients.toString());
         remoteViews.setRemoteAdapter(R.id.ingredients_widget_list,adapterIntent);
         remoteViews.setTextViewText(R.id.empty_view,"Empty Clicked");
@@ -34,7 +33,6 @@ public class IngredientsWidget extends AppWidgetProvider {
         Intent app = new Intent(context,BakersBookActivity.class);
         PendingIntent appLauncher = PendingIntent.getActivity(context,0,app,0);
         remoteViews.setPendingIntentTemplate(R.id.ingredients_widget_list,appLauncher);
-
         Log.d("widget","updated AppWidget");
         appWidgetManager.updateAppWidget(appWidgetId,remoteViews);
     }
@@ -47,7 +45,6 @@ public class IngredientsWidget extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.widget,appLauncher);
         Log.d("widget","intiated AppWidget");
         remoteViews.setViewVisibility(R.id.ingredients_widget_list, View.GONE);
-
         remoteViews.setEmptyView(R.id.ingredients_list,R.id.empty_view);
         appWidgetManager.updateAppWidget(appWidgetId,remoteViews);
     }
