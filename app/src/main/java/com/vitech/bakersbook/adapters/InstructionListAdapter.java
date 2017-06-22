@@ -1,6 +1,5 @@
 package com.vitech.bakersbook.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -13,12 +12,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class InstructionListAdapter extends RecyclerView.Adapter<InstructionListAdapter.InstructionHolder> {
-private Context context;
 private JSONArray instructions;
 private OnInstructionClickedListener onInstructionClickedListener;
 
-    public InstructionListAdapter(Context context, JSONArray instructions) {
-        this.context = context;
+    public InstructionListAdapter(JSONArray instructions) {
         this.instructions = instructions;
     }
 

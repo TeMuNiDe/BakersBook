@@ -11,13 +11,7 @@ import com.vitech.bakersbook.InstructionFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.HashMap;
-
 import static com.vitech.bakersbook.InstructionFragment.ARG_INSTRUCTION;
-
-/**
- * Created by varma on 19-06-2017.
- */
 
 public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
     private JSONArray instructions;

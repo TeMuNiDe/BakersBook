@@ -26,12 +26,12 @@ import static com.vitech.bakersbook.RecipeActivity.EXTRA_RECIPE;
 import static com.vitech.bakersbook.RecipeActivity.EXTRA_RECIPES;
 
 public class BakersBookActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>{
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
     @BindView(R.id.recipe_list)
     RecyclerView recipeList;
     private static final int LOADER_ID=1258;
     private  static  final String KEY_RESPONSE = "response_data";
-    String responseData;
+    private String responseData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

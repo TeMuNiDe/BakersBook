@@ -1,7 +1,6 @@
 package com.vitech.bakersbook;
 
 
-import android.content.pm.PackageManager;
 import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import com.vitech.bakersbook.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,14 +43,17 @@ import butterknife.ButterKnife;
  */
 public class InstructionFragment extends Fragment implements ExoPlayer.EventListener{
     public static final String ARG_INSTRUCTION = "instruction";
-    public static final String ARG_POSITION = "position";
+    private static final String ARG_POSITION = "position";
 
-@BindView(R.id.instruction_video)SimpleExoPlayerView instructionVideo;
-@BindView(R.id.instruction_description)TextView instructionDescription;
-@BindView(R.id.video_placeholder)ImageView videoPlaceHolder;
-    SimpleExoPlayer player;
-    boolean HAS_VIDEO = true;
-    long currentPosition = 0;
+@BindView(R.id.instruction_video)
+ SimpleExoPlayerView instructionVideo;
+@BindView(R.id.instruction_description)
+ TextView instructionDescription;
+@BindView(R.id.video_placeholder)
+ ImageView videoPlaceHolder;
+    private SimpleExoPlayer player;
+    private boolean HAS_VIDEO = true;
+    private long currentPosition = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,8 +82,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                 return contentView;
             }
             TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            player =  ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector,loadControl);
+            player =  ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector);
             instructionVideo.setPlayer(player);
 
             Uri mediaUri = Uri.parse(instruction.getString("videoURL"));

@@ -12,22 +12,14 @@ import android.widget.RemoteViews;
 import com.vitech.bakersbook.BakersBookActivity;
 import com.vitech.bakersbook.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import static com.vitech.bakersbook.widget.WidgetListAdapterService.ARG_INGREDIENTS;
-
 public class IngredientsWidget extends AppWidgetProvider {
 
-   public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                JSONArray ingredients, int appWidgetId)throws JSONException {
+   public static void updateAppWidget(Context context,AppWidgetManager appWidgetManager,int appWidgetId){
         Log.d("widget","update called");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
-      // remoteViews.removeAllViews(R.id.widget);
-        Intent adapterIntent  = new Intent(context, com.vitech.bakersbook.widget.WidgetListAdapterService.class);
-        adapterIntent.putExtra(ARG_INGREDIENTS,ingredients.toString());
+       Intent adapterIntent  = new Intent(context, com.vitech.bakersbook.widget.WidgetListAdapterService.class);
+       appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.ingredients_widget_list);
         remoteViews.setRemoteAdapter(R.id.ingredients_widget_list,adapterIntent);
-        remoteViews.setTextViewText(R.id.empty_view,"Empty Clicked");
         remoteViews.setViewVisibility(R.id.ingredients_widget_list, View.VISIBLE);
         remoteViews.setViewVisibility(R.id.empty_view, View.GONE);
         Intent app = new Intent(context,BakersBookActivity.class);
@@ -37,8 +29,8 @@ public class IngredientsWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId,remoteViews);
     }
 
-    void initiateWidget(AppWidgetManager appWidgetManager,Context context,int appWidgetId){
-        Log.d("widget","update intiated");
+    private void initiateWidget(AppWidgetManager appWidgetManager, Context context, int appWidgetId){
+        Log.d("widget","update initiated");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.ingredients_widget);
         Intent app = new Intent(context,BakersBookActivity.class);
         PendingIntent appLauncher = PendingIntent.getActivity(context,0,app,0);
@@ -51,7 +43,7 @@ public class IngredientsWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-Log.d("widget","ON UPDATE");
+        Log.d("widget","ON UPDATE");
         for(int widget:appWidgetIds){
             initiateWidget(appWidgetManager,context,widget);
         }

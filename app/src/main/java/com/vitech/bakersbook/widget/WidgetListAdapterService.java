@@ -2,6 +2,8 @@ package com.vitech.bakersbook.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -12,26 +14,16 @@ import org.json.JSONException;
 
 import java.util.Locale;
 
+import static com.vitech.bakersbook.widget.WidgetListAdapterService.ARG_INGREDIENTS;
+
 
 public class WidgetListAdapterService extends RemoteViewsService {
     public static final String ARG_INGREDIENTS = "ingredients";
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d("wdiget","error");
-    }
-
-    @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        try{
             Log.d("widget","onGetViewFactory");
-        return new IngredientsListAdapter(new JSONArray(intent.getStringExtra(ARG_INGREDIENTS)),this.getApplicationContext());
-        }catch (JSONException j){
-            j.printStackTrace();
-            Log.d("wdiget","error");
-            return null;
-        }
+            return new IngredientsListAdapter(this.getApplicationContext());
     }
 
 
@@ -39,8 +31,7 @@ public class WidgetListAdapterService extends RemoteViewsService {
 class IngredientsListAdapter implements RemoteViewsService.RemoteViewsFactory{
 private JSONArray ingredients;
 private Context context;
-     IngredientsListAdapter(JSONArray ingredients,Context context) {
-        this.ingredients = ingredients;
+     IngredientsListAdapter(Context context) {
          this.context = context;
          Log.d("widget","adapter_instance");
     }
@@ -52,7 +43,13 @@ private Context context;
 
     @Override
     public void onDataSetChanged() {
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            ingredients = new JSONArray(preferences.getString(ARG_INGREDIENTS, null));
+            Log.d("widget", "datasetchanged" + ingredients.toString());
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

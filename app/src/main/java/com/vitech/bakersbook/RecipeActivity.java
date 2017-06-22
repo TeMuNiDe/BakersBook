@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,16 +33,22 @@ import butterknife.ButterKnife;
 import static com.vitech.bakersbook.InstructionActivity.ARG_CURRENT_INSTRUCTION;
 import static com.vitech.bakersbook.InstructionActivity.ARG_INSTRUCTION_SET;
 import static com.vitech.bakersbook.InstructionFragment.ARG_INSTRUCTION;
+import static com.vitech.bakersbook.widget.WidgetListAdapterService.ARG_INGREDIENTS;
 
 public class RecipeActivity extends AppCompatActivity {
-@BindView(R.id.ingredients_list)RecyclerView ingredientsList;
-@BindView(R.id.instructions_list)RecyclerView instructionList;
-@BindView(R.id.all_recipes)RecyclerView allRecipes;
-@BindView(R.id.recipe_drawer)DrawerLayout recipeDrawer;
+@BindView(R.id.ingredients_list)
+ RecyclerView ingredientsList;
+@BindView(R.id.instructions_list)
+ RecyclerView instructionList;
+@BindView(R.id.all_recipes)
+ RecyclerView allRecipes;
+@BindView(R.id.recipe_drawer)
+ DrawerLayout recipeDrawer;
 @Nullable
-@BindView(R.id.instruction_container)FrameLayout instructionContainer;
- ActionBarDrawerToggle toggle;
-static boolean TABLET_MODE;
+@BindView(R.id.instruction_container)
+ FrameLayout instructionContainer;
+ private ActionBarDrawerToggle toggle;
+private static boolean TABLET_MODE;
 public static final String EXTRA_RECIPE = "recipe";
 public static final String EXTRA_RECIPES = "recipes";
 private static final String ARG_APP_STATE = "app_state";
@@ -87,7 +94,7 @@ private JSONArray ingredients;
     }
 
 
-    void setContentView(Bundle intent){
+    private void setContentView(Bundle intent){
         recipeDrawer.closeDrawer(GravityCompat.START);
        toggle = new ActionBarDrawerToggle(this,recipeDrawer,R.string.open_drawer,R.string.close_drawer);
         recipeDrawer.addDrawerListener(toggle);
@@ -114,7 +121,7 @@ private JSONArray ingredients;
                 }
             });
             ingredientsList.setAdapter(new IngredientListAdapter(this, ingredients));
-            instructionList.setAdapter(new InstructionListAdapter(this,recipe.getJSONArray("steps")));
+            instructionList.setAdapter(new InstructionListAdapter(recipe.getJSONArray("steps")));
             ingredientsList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false){
                 @Override
                 public boolean canScrollVertically() {
@@ -178,12 +185,9 @@ private JSONArray ingredients;
         int[] widgets = manager.getAppWidgetIds(new ComponentName(this,IngredientsWidget.class));
 
 for(int widget:widgets){
-    try {
-        Log.d("widget","clicked_recipe");
-        IngredientsWidget.updateAppWidget(this, manager, ingredients, widget);
-    }catch (JSONException j){
-        j.printStackTrace();
-    }
+    Log.d("widget","clicked_recipe");
+    PreferenceManager.getDefaultSharedPreferences(this).edit().putString(ARG_INGREDIENTS,ingredients.toString()).commit();
+    IngredientsWidget.updateAppWidget(this, manager, widget);
 }
 
 Toast.makeText(this,R.string.message_widget_added,Toast.LENGTH_LONG).show();

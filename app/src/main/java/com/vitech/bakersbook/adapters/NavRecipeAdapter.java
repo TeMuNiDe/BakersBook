@@ -1,6 +1,5 @@
 package com.vitech.bakersbook.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;

@@ -1,16 +1,12 @@
 package com.vitech.bakersbook;
 
 import android.content.res.Configuration;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
-import com.vitech.bakersbook.adapters.InstructionListAdapter;
 import com.vitech.bakersbook.adapters.InstructionPagerAdapter;
 
 import org.json.JSONArray;
@@ -21,16 +17,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 
-import static com.vitech.bakersbook.InstructionFragment.ARG_INSTRUCTION;
-
 public class InstructionActivity extends AppCompatActivity {
- @BindView(R.id.instruction_pager)ViewPager instructionPager;
- @BindView(R.id.go_next)Button goNext;
- @BindView(R.id.go_previous)Button goPrevious;
+ @BindView(R.id.instruction_pager)
+  ViewPager instructionPager;
+ @BindView(R.id.go_next)
+ Button goNext;
+ @BindView(R.id.go_previous)
+  Button goPrevious;
 
-    InstructionPagerAdapter adapter;
-    int end = 0;
-    int position;
+    private InstructionPagerAdapter adapter;
+    private int end = 0;
+    private int position;
     public static final String ARG_INSTRUCTION_SET = "instruction_set";
     public static final String ARG_CURRENT_INSTRUCTION = "current_instruction";
     @Override
@@ -77,7 +74,7 @@ public class InstructionActivity extends AppCompatActivity {
         setCorrectState();
     }
 
-    void setCorrectState(){
+    private void setCorrectState(){
        if(position==0){
            goPrevious.setVisibility(View.GONE);
        }
