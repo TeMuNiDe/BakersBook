@@ -17,20 +17,22 @@
             android:layout_height="match_parent"
             android:id="@+id/instruction_video"
             />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/app_name"
-            android:id="@+id/video_placeholder"
-            android:src="@drawable/ic_cookies"
-            android:visibility="gone"
-            android:scaleType="centerInside"
-            />
-
     </FrameLayout>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:id="@+id/thumbnail"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/appwidget_text"
+
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintTop_toBottomOf="@id/media_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/instruction_description"
+        />
     <TextView
         app:layout_constraintTop_toBottomOf="@+id/media_container"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/thumbnail"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

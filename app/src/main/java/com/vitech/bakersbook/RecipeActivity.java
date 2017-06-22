@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +17,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.vitech.bakersbook.adapters.IngredientListAdapter;
 import com.vitech.bakersbook.adapters.InstructionListAdapter;
@@ -29,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.vitech.bakersbook.InstructionActivity.ARG_CURRENT_INSTRUCTION;
 import static com.vitech.bakersbook.InstructionActivity.ARG_INSTRUCTION_SET;
@@ -71,6 +75,22 @@ private JSONArray ingredients;
             }
         }
         setContentView(appState);
+    }
+
+    @OnClick(R.id.add_tohomeScreen)
+    void addToHomeScreenWidget(View v ){
+        AppWidgetManager manager = AppWidgetManager.getInstance(this) ;
+        int[] widgets = manager.getAppWidgetIds(new ComponentName(this,IngredientsWidget.class));
+
+        for(int widget:widgets){
+            Log.d("widget","clicked_recipe");
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putString(ARG_INGREDIENTS,ingredients.toString()).commit();
+            Intent widgetUpdater = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            widgetUpdater.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widget);
+            sendBroadcast(widgetUpdater);
+        }
+
+        Toast.makeText(this,R.string.message_widget_added,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -170,27 +190,12 @@ private JSONArray ingredients;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.recipe_activity_menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
-       AppWidgetManager manager = AppWidgetManager.getInstance(this) ;
-        int[] widgets = manager.getAppWidgetIds(new ComponentName(this,IngredientsWidget.class));
 
-for(int widget:widgets){
-    Log.d("widget","clicked_recipe");
-    PreferenceManager.getDefaultSharedPreferences(this).edit().putString(ARG_INGREDIENTS,ingredients.toString()).commit();
-    IngredientsWidget.updateAppWidget(this, manager, widget);
-}
-
-Toast.makeText(this,R.string.message_widget_added,Toast.LENGTH_LONG).show();
         return true;
     }
 

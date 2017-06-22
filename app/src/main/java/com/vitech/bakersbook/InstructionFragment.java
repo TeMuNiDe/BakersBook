@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.squareup.picasso.Picasso;
 import com.vitech.bakersbook.R;
 
 import org.json.JSONException;
@@ -49,8 +51,8 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
  SimpleExoPlayerView instructionVideo;
 @BindView(R.id.instruction_description)
  TextView instructionDescription;
-@BindView(R.id.video_placeholder)
- ImageView videoPlaceHolder;
+@BindView(R.id.thumbnail)
+ ImageView thumbNail;
     private SimpleExoPlayer player;
     private boolean HAS_VIDEO = true;
     private long currentPosition = 0;
@@ -72,14 +74,19 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         View contentView =  inflater.inflate(R.layout.fragment_video_player, container, false);
         ButterKnife.bind(this,contentView);
         try{
-
             JSONObject instruction = new JSONObject(getArguments().getString(ARG_INSTRUCTION));
             instructionDescription.setText(instruction.getString("description"));
             if(instruction.getString("videoURL").equals("")){
                 HAS_VIDEO = false;
-                videoPlaceHolder.setVisibility(View.VISIBLE);
-                instructionVideo.setVisibility(View.INVISIBLE);
+                instructionVideo.setVisibility(View.GONE);
                 return contentView;
+            }
+
+            thumbNail.setImageResource(R.drawable.ic_cookies);
+
+            if(!TextUtils.isEmpty(instruction.getString("thumbnailURL"))){
+                Picasso.with(getContext()).load(instruction.getString("thumbnailURL")).error(R.drawable.ic_cookies).into(thumbNail);
+
             }
             TrackSelector trackSelector = new DefaultTrackSelector();
             player =  ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector);
@@ -111,17 +118,11 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         if(HAS_VIDEO) {
             currentPosition = player.getCurrentPosition();
             player.setPlayWhenReady(false);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if(HAS_VIDEO) {
             player.stop();
             player.release();
         }
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
