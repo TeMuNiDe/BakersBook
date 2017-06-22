@@ -5,9 +5,8 @@
 > #### Home Screen Widget
 > Add the widget to your home screen first
 > open app by clicking on widget or through Launcher.
-> select any recipe and Click on add icon on the Action Bar.
-> Check Back Wdiget.
->
+> select any recipe and Click on FAB to add data to widget.
+
 > #### Tests.
 > There are two tests in androidTest folder.
 > one for testing Intent when clicked on a recipe
